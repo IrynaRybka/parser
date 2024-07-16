@@ -1,14 +1,29 @@
-// import puppeteer from 'puppeteer';
+
 const puppeteer = require('puppeteer');
+const fs = require('fs/promises');
+
+
 
 (async () => {
     
     const browser = await puppeteer.launch({headless: false});
     const page = await browser.newPage();
-    await page.setViewport({width: 1080, height: 1024});
-    await page.goto('https://linkedin.com/in/iryna-rybka-95482819a')
+   
+    await page.goto('https://uk.wikipedia.org/wiki/JavaScript');
 
+    const name = ["Ira", "Mary", "Ann"]
+    await fs.writeFile("names.txt", name.join("\r\n"));
 
+    const photos = await page.$$eval("img", (element) => {
+return element.map(el => el.src)
+    })
+    for (photo of photos) {
+      const imagepage = await image.goto(photo)
+      await fs.writeFile(photo.split("/").pop(), await imagepage.buffer())
+    }
+  
+
+    await browser.close();
 
   })();
 
