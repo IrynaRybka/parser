@@ -2,6 +2,8 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs/promises');
 
+const xlsx = require('node-xlsx');
+
 
 
 (async () => {
@@ -14,18 +16,29 @@ const fs = require('fs/promises');
     const names = await page.evaluate(() => {
       return Array.from(document.querySelectorAll("h2")).map(el => el.textContent)
     })
-    await fs.writeFile("names.txt", names.join("\r\n"));
+    // await fs.writeFile("names.txt", names.join("\r\n"));
+    const jsonNames = JSON.stringify(names, null, 4);
+    const namesData = await fs.writeFile('names_j.json', jsonNames, 'utf8', function(error) {
+  if (error) {
+    return console.error(error);
+  }
+  console.log('Файл сохранен!');
+  return namesData
+});
+
+
 // take all img on page
-    const photos = await page.$$eval("img", (element) => {
-return element.map(el => el.src)
-    })
-    for (photo of photos) {
-      const imagepage = await page.goto(photo)
-      await fs.writeFile(photo.split("/").pop(), await imagepage.buffer())
-    }
+//     const photos = await page.$$eval("img", (element) => {
+// return element.map(el => el.src)
+//     })
+//     for (photo of photos) {
+//       const imagepage = await page.goto(photo)
+//       await fs.writeFile(photo.split("/").pop(), await imagepage.buffer())
+//     }
   
 
     await browser.close();
 
   })();
 
+  
