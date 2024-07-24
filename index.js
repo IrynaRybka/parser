@@ -2,7 +2,8 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs/promises');
 
-const xlsx = require('node-xlsx');
+const XLSX = require('xlsx');
+
 
 
 
@@ -22,10 +23,16 @@ const xlsx = require('node-xlsx');
   if (error) {
     return console.error(error);
   }
-  console.log('Файл сохранен!');
-  return namesData
+  console.log("file is create")
 });
+// read json
+const nameData = fs.readFile("./names_j.json", {ecoding : 'utf8'})
+console.log(nameData)
 
+// const newBook = XLSX.utils.book_new();
+// const newSheet = XLSX.utils.json_to_sheet(names.Sheet1)
+// XLSX.utils.book_append_sheet(newBook, newSheet, "Sheet1")
+// XLSX.writeFile(newBook, "newBook.xlsx")
 
 // take all img on page
 //     const photos = await page.$$eval("img", (element) => {
